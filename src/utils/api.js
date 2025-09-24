@@ -1,4 +1,4 @@
-const API_URL = "https://backend-production-6dc43.up.railway.app/api/admin"; // Your backend admin URL
+const API_URL = "https://backend-production-5823.up.railway.app/api/admin"; // Your backend admin URL
 
 // A helper function to handle API requests
 const apiRequest = async (endpoint, method = 'GET', body = null) => {

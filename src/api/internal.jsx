@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useCallback } from "react"; // Add useCallback import
 
-const BACKEND_URL = "https://backend-production-6dc43.up.railway.app/api";
+const BACKEND_URL = "https://backend-production-5823.up.railway.app/api";
 
 const API = axios.create({
     baseURL: BACKEND_URL,
