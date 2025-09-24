@@ -5,6 +5,7 @@ const initialState = {
     name: "",
     email: "",
     role: "",
+    isAuthenticated: false, // Add this field
 };
 
 const authSlice = createSlice({
@@ -17,6 +18,7 @@ const authSlice = createSlice({
             state.name = action.payload.name;
             state.email = action.payload.email;
             state.role = action.payload.role;
+            state.isAuthenticated = true; // Set authenticated to true
         },
 
         // Logout
@@ -25,6 +27,7 @@ const authSlice = createSlice({
             state.name = "";
             state.email = "";
             state.role = "";
+            state.isAuthenticated = false; // Set authenticated to false
         },
     },
 });

@@ -1,6 +1,6 @@
-import React,{useState } from "react";
+import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useLogin } from "../api/internal";
+import { useAdminLogin } from "../api/internal"; // Use adminLogin hook instead
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { login as setAuth } from "../Store/authSlice";
@@ -12,7 +12,8 @@ export default function ClassyShopLogin() {
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(true);
 
-    const { error, loading, login } = useLogin();
+    // ✅ FIX: Use useAdminLogin instead of useLogin
+    const { error, loading, adminLogin } = useAdminLogin();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,14 +25,24 @@ export default function ClassyShopLogin() {
             return toast.error("Please fill all the fields!");
         }
 
-        const data = await login(email, password);
+        try {
+            // ✅ FIX: Use adminLogin instead of login
+            const data = await adminLogin(email, password);
 
-        if (error) {
-            return toast.error(error);
+            if (data && data.user) {
+                // ✅ FIX: Make sure to include role in the auth state
+                dispatch(setAuth({
+                    ...data.user,
+                    role: data.user.role || 'admin' // Ensure role is set
+                }));
+                
+                toast.success("Admin login successful!");
+                navigate("/dashboard");
+            }
+        } catch (err) {
+            console.error('Login error:', err);
+            toast.error(err.response?.data?.message || "Login failed");
         }
-
-        dispatch(setAuth(data.user));
-        navigate("/dashboard");
     };
 
     return (
@@ -49,15 +60,15 @@ export default function ClassyShopLogin() {
                             </div>
                         </div>
                         <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                            Welcome Back!
+                            Admin Login
                         </h2>
                         <p className="text-xl text-gray-900">
-                            Sign in with your credentials.
+                            Sign in with your admin credentials.
                         </p>
                     </div>
 
                     {/* Login Form */}
-                    <div className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Email Field */}
                         <div>
                             <label
@@ -73,6 +84,7 @@ export default function ClassyShopLogin() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 required
+                                placeholder="admin@example.com"
                             />
                         </div>
 
@@ -94,6 +106,7 @@ export default function ClassyShopLogin() {
                                     }
                                     className="w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
+                                    placeholder="Enter your password"
                                 />
                                 <button
                                     type="button"
@@ -143,7 +156,7 @@ export default function ClassyShopLogin() {
                         {/* Sign Up Link */}
                         <div className="flex items-center justify-between text-sm">
                             <span className="text-gray-600">
-                                Don't have an account?
+                                Need an admin account?
                             </span>
                             <a
                                 href="/signup"
@@ -155,14 +168,20 @@ export default function ClassyShopLogin() {
 
                         {/* Sign In Button */}
                         <button
-                            type="button"
-                            onClick={handleSubmit}
+                            type="submit"
                             disabled={loading}
-                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:bg-blue-400"
                         >
-                            {loading ? "Loading " : "SIGN IN"}
+                            {loading ? "Signing In..." : "ADMIN SIGN IN"}
                         </button>
-                    </div>
+                    </form>
+
+                    {/* Debug Info */}
+                    {error && (
+                        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <p className="text-red-600 text-sm">{error}</p>
+                        </div>
+                    )}
                 </div>
             </main>
         </div>
