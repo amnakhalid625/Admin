@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import StatsCard from "../components/Dashboard/StatesCard";
 import Charts from "../components/Dashboard/Chart.jsx";
 import { toast } from "react-hot-toast";
+
 import {
     FiUsers,
     FiShoppingCart,
@@ -20,14 +21,12 @@ const Dashboard = () => {
     const { getAdminStats, loading, error } = useGetAdminStats();
     const [stats, setStats] = useState(null);
 
-    // ✅ FIX: Get auth state correctly according to your slice structure
-    const authState = useSelector((state) => state.auth);
-    const user = {
-        id: authState.id,
-        name: authState.name,
-        email: authState.email,
-        role: authState.role
-    };
+    // Get admin user info from Redux or local storage
+    const adminInfo = useSelector((state) => state.orebiReducer?.adminInfo);
+    const userInfo = useSelector((state) => state.orebiReducer?.userInfo);
+    
+    // Use admin info if available, otherwise use regular user info
+    const user = adminInfo || userInfo;
 
     const {
         data,
@@ -43,20 +42,20 @@ const Dashboard = () => {
         const fetchStats = async () => {
             try {
                 console.log('Fetching dashboard stats...');
-                console.log('Current auth state:', authState);
-                
                 const data = await getAdminStats();
                 console.log('Dashboard stats received:', data);
                 setStats(data);
             } catch (error) {
                 console.error('Error fetching dashboard stats:', error);
                 toast.error(error.message || 'Failed to fetch dashboard stats');
+                // Set empty stats to stop loading
                 setStats({});
             }
         };
 
+        // Only fetch once on component mount
         fetchStats();
-    }, [getAdminStats]);
+    }, []); // Empty dependency array - only run once
 
     const dashboardstats = [
         {
@@ -93,7 +92,7 @@ const Dashboard = () => {
         },
     ];
 
-    // Show loading state
+    // Show loading state (only show if stats is still null)
     if (loading && stats === null) {
         return (
             <div className="flex items-center justify-center min-h-96">
@@ -105,7 +104,7 @@ const Dashboard = () => {
         );
     }
 
-    // Show error state if stats couldn't be fetched
+    // Show error state if stats couldn't be fetched (likely authentication issue)
     if (error) {
         return (
             <div className="flex items-center justify-center min-h-96">
@@ -113,10 +112,7 @@ const Dashboard = () => {
                     <div className="text-red-500 text-4xl mb-4">🚫</div>
                     <h2 className="text-xl font-semibold text-red-700 mb-2">Access Denied</h2>
                     <p className="text-red-600 mb-4">{error}</p>
-                    <p className="text-sm text-gray-600">
-                        Please make sure you're logged in as an admin. 
-                        Current role: {user.role || 'Not logged in'}
-                    </p>
+                    <p className="text-sm text-gray-600">Please make sure you're logged in as an admin.</p>
                 </div>
             </div>
         );
@@ -131,14 +127,12 @@ const Dashboard = () => {
                         <h1 className="text-3xl font-bold text-gray-800">
                             Welcome,{" "}
                             <span className="text-blue-600">
-                                {user.name || user.email || 'Admin'}
+                                {user?.name || user?.email || 'Admin'}
                             </span>
                         </h1>
                         <p className="text-gray-600 mt-2">
-                            Role: <span className="font-semibold">{user.role || 'Unknown'}</span>
-                        </p>
-                        <p className="text-gray-600">
-                            Here's what's happening on your store today.
+                            Here's what's happening on your store today. See the
+                            statistics at once.
                         </p>
                         <Link
                             to="/products/add"
@@ -165,15 +159,14 @@ const Dashboard = () => {
                 ))}
             </div>
 
-            {/* Debug Info */}
-            {process.env.NODE_ENV === 'development' && (
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            {/* Debug Info - Only in development */}
+            {process.env.NODE_ENV === 'development' && stats && (
+                <div className="bg-green-50 border-l-4 border-green-400 p-4">
                     <div className="flex">
                         <div className="ml-3">
-                            <p className="text-sm text-yellow-700">
-                                <strong>Debug Info:</strong> 
-                                {' '}User: {JSON.stringify(user)} | 
-                                {' '}Authenticated: {authState.isAuthenticated ? 'Yes' : 'No'}
+                            <p className="text-sm text-green-700">
+                                <strong>✅ Dashboard loaded successfully!</strong> 
+                                {' '}Stats: {JSON.stringify(stats)}
                             </p>
                         </div>
                     </div>
