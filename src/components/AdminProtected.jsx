@@ -11,7 +11,7 @@ const AdminProtected = () => {
     // Check if any user is logged in (admin or regular user)
     const isAuthenticated = user.id !== "" || adminInfo || userInfo;
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
 };
 
 export default AdminProtected
