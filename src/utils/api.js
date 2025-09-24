@@ -1,4 +1,4 @@
-const API_URL = "https://backend-production-5823.up.railway.app/api/admin"; // Your backend admin URL
+const API_URL = "http://localhost:8080/api/admin"; // Your backend admin URL
 
 // A helper function to handle API requests
 const apiRequest = async (endpoint, method = 'GET', body = null) => {
@@ -13,7 +13,7 @@ const apiRequest = async (endpoint, method = 'GET', body = null) => {
         };
 
         if (body) {
-            config.body = JSON.stringify(body)
+            config.body = JSON.stringify(body);
         }
 
         const response = await fetch(`${API_URL}${endpoint}`, config);

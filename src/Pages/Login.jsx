@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React,{useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLogin } from "../api/internal";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { login as setAuth } from "../Store/authSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ClassyShopLogin() {
     const [email, setEmail] = useState("");
@@ -13,6 +13,7 @@ export default function ClassyShopLogin() {
     const [rememberMe, setRememberMe] = useState(true);
 
     const { error, loading, login } = useLogin();
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -23,20 +24,22 @@ export default function ClassyShopLogin() {
             return toast.error("Please fill all the fields!");
         }
 
-        try {
-            const data = await login(email, password);
-            dispatch(setAuth(data.user));
-            toast.success("Login successful!");
-            navigate("/dashboard");
-        } catch (err) {
-            toast.error(error || "Login failed. Please try again.");
+        const data = await login(email, password);
+
+        if (error) {
+            return toast.error(error);
         }
+
+        dispatch(setAuth(data.user));
+        navigate("/dashboard");
     };
 
     return (
         <div className="min-h-max bg-gray-50">
+            {/* Main Content */}
             <main className="flex items-center justify-center px-4 py-16">
                 <div className="w-full max-w-md">
+                    {/* Welcome Section */}
                     <div className="text-center mb-8">
                         <div className="mb-4">
                             <div className="inline-flex items-center gap-1 text-4xl mb-2">
@@ -53,9 +56,14 @@ export default function ClassyShopLogin() {
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Login Form */}
+                    <div className="space-y-6">
+                        {/* Email Field */}
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700 mb-2"
+                            >
                                 Email
                             </label>
                             <input
@@ -68,8 +76,12 @@ export default function ClassyShopLogin() {
                             />
                         </div>
 
+                        {/* Password Field */}
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-gray-700 mb-2"
+                            >
                                 Password
                             </label>
                             <div className="relative">
@@ -77,55 +89,80 @@ export default function ClassyShopLogin() {
                                     id="password"
                                     type={showPassword ? "text" : "password"}
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
                                     className="w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                                 >
-                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    {showPassword ? (
+                                        <EyeOff className="h-5 w-5" />
+                                    ) : (
+                                        <Eye className="h-5 w-5" />
+                                    )}
                                 </button>
                             </div>
                         </div>
 
+                        {/* Remember Me & Forgot Password */}
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
                                 <input
                                     id="remember-me"
                                     type="checkbox"
                                     checked={rememberMe}
-                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                    onChange={(e) =>
+                                        setRememberMe(e.target.checked)
+                                    }
                                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                 />
-                                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                                <label
+                                    htmlFor="remember-me"
+                                    className="ml-2 block text-sm text-gray-900"
+                                >
                                     Remember Me
                                 </label>
                             </div>
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                                <a
+                                    href="#"
+                                    className="font-medium text-blue-600 hover:text-blue-500"
+                                >
                                     Forgot Password?
                                 </a>
                             </div>
                         </div>
 
+                        {/* Sign Up Link */}
                         <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600">Don't have an account?</span>
-                            <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
+                            <span className="text-gray-600">
+                                Don't have an account?
+                            </span>
+                            <a
+                                href="/signup"
+                                className="font-medium text-blue-600 hover:text-blue-500"
+                            >
                                 Sign Up
-                            </Link>
+                            </a>
                         </div>
 
+                        {/* Sign In Button */}
                         <button
-                            type="submit"
+                            type="button"
+                            onClick={handleSubmit}
                             disabled={loading}
                             className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                         >
-                            {loading ? "Loading..." : "SIGN IN"}
+                            {loading ? "Loading " : "SIGN IN"}
                         </button>
-                    </form>
+                    </div>
                 </div>
             </main>
         </div>
