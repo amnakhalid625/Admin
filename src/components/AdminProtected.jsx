@@ -14,4 +14,4 @@ const AdminProtected = () => {
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-export default AdminProtected;
+export default AdminProtected
