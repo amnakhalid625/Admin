@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAdminSignUp } from "../api/internal"; // Ensure this hook is updated to not send the secret
+import { useAdminSignUp } from "../api/internal";
 
 const SignUp = () => {
     const [name, setName] = useState("");
@@ -10,13 +10,12 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    // Use the custom hook for admin sign-up
     const { adminSignUp, loading, error } = useAdminSignUp();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Secret key validation is removed
+        
         if (!name || !email || !password) {
             return toast.error("Please fill all the fields!");
         }
@@ -25,10 +24,9 @@ const SignUp = () => {
         }
 
         try {
-            // The `secret` parameter is no longer passed
             await adminSignUp(name, email, password);
             toast.success("Admin account created successfully! Please sign in.");
-            navigate("/login"); // Redirect to login page on success
+            navigate("/login");
         } catch (err) {
             toast.error(error || "Failed to create admin account.");
         }
@@ -37,7 +35,6 @@ const SignUp = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
             <main className="w-full max-w-md p-8 bg-white shadow-lg rounded-xl">
-                {/* Welcome Section */}
                 <div className="text-center mb-8">
                     <div className="mb-4">
                         <div className="inline-flex items-center gap-1 text-4xl mb-2">
@@ -54,14 +51,9 @@ const SignUp = () => {
                     </p>
                 </div>
 
-                {/* Sign-Up Form */}
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Full Name Field */}
                     <div>
-                        <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                             Full Name
                         </label>
                         <input
@@ -73,12 +65,9 @@ const SignUp = () => {
                             required
                         />
                     </div>
-                    {/* Email Field */}
+                    
                     <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                             Email
                         </label>
                         <input
@@ -91,12 +80,8 @@ const SignUp = () => {
                         />
                     </div>
 
-                    {/* Password Field */}
                     <div>
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-medium text-gray-700 mb-2"
-                        >
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                             Password
                         </label>
                         <div className="relative">
@@ -104,44 +89,27 @@ const SignUp = () => {
                                 id="password"
                                 type={showPassword ? "text" : "password"}
                                 value={password}
-                                onChange={(e) =>
-                                    setPassword(e.target.value)
-                                }
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 required
                             />
                             <button
                                 type="button"
-                                onClick={() =>
-                                    setShowPassword(!showPassword)
-                                }
+                                onClick={() => setShowPassword(!showPassword)}
                                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                             >
-                                {showPassword ? (
-                                    <EyeOff className="h-5 w-5" />
-                                ) : (
-                                    <Eye className="h-5 w-5" />
-                                )}
+                                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                             </button>
                         </div>
                     </div>
 
-                    {/* REMOVED: Admin Secret Key Field */}
-
-                    {/* Sign In Link */}
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">
-                            Already have an account?
-                        </span>
-                        <Link
-                            to="/login"
-                            className="font-medium text-blue-600 hover:text-blue-500"
-                        >
+                        <span className="text-gray-600">Already have an account?</span>
+                        <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
                             Sign In
                         </Link>
                     </div>
 
-                    {/* Sign Up Button */}
                     <button
                         type="submit"
                         disabled={loading}
