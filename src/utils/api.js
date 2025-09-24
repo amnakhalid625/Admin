@@ -13,7 +13,7 @@ const apiRequest = async (endpoint, method = 'GET', body = null) => {
         };
 
         if (body) {
-            config.body = JSON.stringify(body);
+            config.body = JSON.stringify(body)
         }
 
         const response = await fetch(`${API_URL}${endpoint}`, config);
