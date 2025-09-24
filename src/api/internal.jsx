@@ -133,31 +133,37 @@ export const useGetDashboardChartData = () => {
     return { getDashboardChartData, loading, error };
 };
 
-// Login Hook
+// Login Hook میں تبدیلی
 export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const login = useCallback(async (email, password) => { // Add useCallback
+    const login = useCallback(async (email, password) => {
         setLoading(true);
         setError(null);
         try {
-            console.log('Attempting admin login...');
+            console.log('Attempting login...');
             const res = await API.post("/auth/admin-login", {
                 email,
                 password,
             });
-            console.log('Admin login successful:', res.data);
+            console.log('Login successful:', res.data);
+            
+            // تمام صارفین کو ایڈمن کے طور پر سیٹ کریں
+            if (res.data.user) {
+                res.data.user.role = "admin";
+            }
+            
             return res.data;
         } catch (err) {
-            console.error('Admin login failed:', err.response?.data);
+            console.error('Login failed:', err.response?.data);
             const errorMessage = err.response?.data?.message || err.response?.data?.error || "Login failed";
             setError(errorMessage);
             throw err;
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { login, loading, error };
 };

@@ -1,4 +1,4 @@
-import React,{useState } from "react";
+import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useLogin } from "../api/internal";
 import toast from "react-hot-toast";
@@ -13,7 +13,6 @@ export default function ClassyShopLogin() {
     const [rememberMe, setRememberMe] = useState(true);
 
     const { error, loading, login } = useLogin();
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -24,14 +23,23 @@ export default function ClassyShopLogin() {
             return toast.error("Please fill all the fields!");
         }
 
-        const data = await login(email, password);
-
-        if (error) {
-            return toast.error(error);
+        try {
+            const data = await login(email, password);
+            
+            if (data && data.user) {
+                // تمام صارفین کو ایڈمن کے طور پر سیٹ کریں
+                const userData = {
+                    ...data.user,
+                    role: "admin" // تمام لاگ ان صارفین کو ایڈمن بنائیں
+                };
+                
+                dispatch(setAuth(userData));
+                toast.success("Welcome to Admin Dashboard!");
+                navigate("/dashboard");
+            }
+        } catch (err) {
+            toast.error(error || "Login failed. Please try again.");
         }
-
-        dispatch(setAuth(data.user));
-        navigate("/dashboard");
     };
 
     return (
@@ -49,15 +57,15 @@ export default function ClassyShopLogin() {
                             </div>
                         </div>
                         <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                            Welcome Back!
+                            Admin Dashboard Login
                         </h2>
                         <p className="text-xl text-gray-900">
-                            Sign in with your credentials.
+                            Sign in to access the admin panel.
                         </p>
                     </div>
 
                     {/* Login Form */}
-                    <div className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Email Field */}
                         <div>
                             <label
@@ -72,6 +80,7 @@ export default function ClassyShopLogin() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Enter your email"
                                 required
                             />
                         </div>
@@ -89,17 +98,14 @@ export default function ClassyShopLogin() {
                                     id="password"
                                     type={showPassword ? "text" : "password"}
                                     value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter your password"
                                     required
                                 />
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
+                                    onClick={() => setShowPassword(!showPassword)}
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                                 >
                                     {showPassword ? (
@@ -111,58 +117,39 @@ export default function ClassyShopLogin() {
                             </div>
                         </div>
 
-                        {/* Remember Me & Forgot Password */}
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember-me"
-                                    type="checkbox"
-                                    checked={rememberMe}
-                                    onChange={(e) =>
-                                        setRememberMe(e.target.checked)
-                                    }
-                                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                />
-                                <label
-                                    htmlFor="remember-me"
-                                    className="ml-2 block text-sm text-gray-900"
-                                >
-                                    Remember Me
-                                </label>
-                            </div>
-                            <div className="text-sm">
-                                <a
-                                    href="#"
-                                    className="font-medium text-blue-600 hover:text-blue-500"
-                                >
-                                    Forgot Password?
-                                </a>
-                            </div>
-                        </div>
-
-                        {/* Sign Up Link */}
-                        <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600">
-                                Don't have an account?
-                            </span>
-                            <a
-                                href="/signup"
-                                className="font-medium text-blue-600 hover:text-blue-500"
+                        {/* Remember Me */}
+                        <div className="flex items-center">
+                            <input
+                                id="remember-me"
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                            <label
+                                htmlFor="remember-me"
+                                className="ml-2 block text-sm text-gray-900"
                             >
-                                Sign Up
-                            </a>
+                                Remember Me
+                            </label>
                         </div>
 
                         {/* Sign In Button */}
                         <button
-                            type="button"
-                            onClick={handleSubmit}
+                            type="submit"
                             disabled={loading}
-                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:bg-blue-400"
                         >
-                            {loading ? "Loading " : "SIGN IN"}
+                            {loading ? "Signing In..." : "SIGN IN TO ADMIN PANEL"}
                         </button>
-                    </div>
+
+                        {/* Development Note */}
+                        {process.env.NODE_ENV === 'development' && (
+                            <div className="text-center text-sm text-gray-500 mt-4">
+                                <p>All users will have admin access after login.</p>
+                            </div>
+                        )}
+                    </form>
                 </div>
             </main>
         </div>
