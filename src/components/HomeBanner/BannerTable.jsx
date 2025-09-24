@@ -12,7 +12,7 @@ const BannerTable = ({
     // Helper to construct full image URL
     const getImageUrl = (path) => {
         if (!path) return "";
-        return `http://localhost:8080${path}`;
+        return `https://backend-production-5823.up.railway.app/${path}`;
     };
 
     return (
