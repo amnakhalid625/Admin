@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useCallback } from "react"; // Add useCallback import
+import { useState, useCallback } from "react";
 
 const BACKEND_URL = "https://backend-production-5823.up.railway.app/api";
 
@@ -61,7 +61,7 @@ export const useGetDashboardStats = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getDashboardStats = useCallback(async () => { // Add useCallback
+    const getDashboardStats = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -77,17 +77,16 @@ export const useGetDashboardStats = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getDashboardStats, loading, error };
 };
 
-// FIXED: useGetAdminStats with useCallback
 export const useGetAdminStats = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getAdminStats = useCallback(async () => { // Add useCallback
+    const getAdminStats = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -103,7 +102,7 @@ export const useGetAdminStats = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getAdminStats, loading, error };
 };
@@ -112,7 +111,7 @@ export const useGetDashboardChartData = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getDashboardChartData = useCallback(async () => { // Add useCallback
+    const getDashboardChartData = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -128,7 +127,7 @@ export const useGetDashboardChartData = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getDashboardChartData, loading, error };
 };
@@ -138,7 +137,7 @@ export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const login = useCallback(async (email, password) => { // Add useCallback
+    const login = useCallback(async (email, password) => {
         setLoading(true);
         setError(null);
         try {
@@ -157,17 +156,16 @@ export const useLogin = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { login, loading, error };
 };
 
-// FIXED: useAdminLogin with useCallback
 export const useAdminLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const adminLogin = useCallback(async (email, password) => { // Add useCallback
+    const adminLogin = useCallback(async (email, password) => {
         setLoading(true);
         setError(null);
         try {
@@ -186,7 +184,7 @@ export const useAdminLogin = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { adminLogin, loading, error };
 };
@@ -195,7 +193,7 @@ export const useLogout = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const logout = useCallback(async () => { // Add useCallback
+    const logout = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -208,22 +206,18 @@ export const useLogout = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { logout, loading, error };
 };
 
-// ***********************************
-//  USERS
-// ***********************************
-
-// Get All Users Hook
+// USERS
 export const useGetUsers = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
 
-    const getUsers = useCallback(async () => { // Add useCallback
+    const getUsers = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -238,22 +232,18 @@ export const useGetUsers = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getUsers, users, loading, error };
 };
 
-// ============================================================================
 // PRODUCT MANAGEMENT HOOKS
-// ============================================================================
-
-// Get All Products Hook
 export const useGetProducts = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [products, setProducts] = useState([]);
 
-    const getProducts = useCallback(async () => { // Add useCallback
+    const getProducts = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -268,18 +258,17 @@ export const useGetProducts = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getProducts, products, loading, error, setProducts };
 };
 
-// Get Single Product Hook
 export const useGetProduct = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [product, setProduct] = useState(null);
 
-    const getProduct = useCallback(async (productId) => { // Add useCallback
+    const getProduct = useCallback(async (productId) => {
         setLoading(true);
         setError(null);
         try {
@@ -294,17 +283,16 @@ export const useGetProduct = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getProduct, product, loading, error };
 };
 
-// Create Product Hook
 export const useCreateProduct = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const createProduct = useCallback(async (productData) => { // Add useCallback
+    const createProduct = useCallback(async (productData) => {
         setLoading(true);
         setError(null);
         try {
@@ -325,17 +313,16 @@ export const useCreateProduct = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { createProduct, loading, error };
 };
 
-// Update Product Hook
 export const useUpdateProduct = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const updateProduct = useCallback(async (productId, productData) => { // Add useCallback
+    const updateProduct = useCallback(async (productId, productData) => {
         setLoading(true);
         setError(null);
         try {
@@ -352,17 +339,16 @@ export const useUpdateProduct = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { updateProduct, loading, error };
 };
 
-// Delete Product Hook
 export const useDeleteProduct = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const deleteProduct = useCallback(async (productId) => { // Add useCallback
+    const deleteProduct = useCallback(async (productId) => {
         setLoading(true);
         setError(null);
         try {
@@ -376,21 +362,18 @@ export const useDeleteProduct = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { deleteProduct, loading, error };
 };
 
-// ============================================================================
 // ORDER MANAGEMENT HOOKS
-// ============================================================================
-
 export const useGetOrders = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [orders, setOrders] = useState([]);
 
-    const getOrders = useCallback(async () => { // Add useCallback
+    const getOrders = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -404,7 +387,7 @@ export const useGetOrders = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getOrders, orders, loading, error };
 };
@@ -414,7 +397,7 @@ export const useGetOrder = () => {
     const [error, setError] = useState(null);
     const [order, setOrder] = useState(null);
 
-    const getOrder = useCallback(async (orderId) => { // Add useCallback
+    const getOrder = useCallback(async (orderId) => {
         setLoading(true);
         setError(null);
         try {
@@ -428,7 +411,7 @@ export const useGetOrder = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getOrder, order, loading, error };
 };
@@ -437,7 +420,7 @@ export const useUpdateOrderStatus = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const updateOrderStatus = useCallback(async (orderId, status) => { // Add useCallback
+    const updateOrderStatus = useCallback(async (orderId, status) => {
         setLoading(true);
         setError(null);
         try {
@@ -450,7 +433,7 @@ export const useUpdateOrderStatus = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { updateOrderStatus, loading, error };
 };
@@ -459,7 +442,7 @@ export const useDeleteOrder = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const deleteOrder = useCallback(async (orderId) => { // Add useCallback
+    const deleteOrder = useCallback(async (orderId) => {
         setLoading(true);
         setError(null);
         try {
@@ -472,22 +455,18 @@ export const useDeleteOrder = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { deleteOrder, loading, error };
 };
 
-
-// ============================================================================
 // BANNER MANAGEMENT HOOKS
-// ============================================================================
-
 export const useGetBanners = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [banners, setBanners] = useState([]);
 
-    const getBanners = useCallback(async () => { // Add useCallback
+    const getBanners = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -502,7 +481,7 @@ export const useGetBanners = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getBanners, banners, loading, error, setBanners };
 };
@@ -512,7 +491,7 @@ export const useGetBanner = () => {
     const [error, setError] = useState(null);
     const [banner, setBanner] = useState(null);
 
-    const getBanner = useCallback(async (bannerId) => { // Add useCallback
+    const getBanner = useCallback(async (bannerId) => {
         setLoading(true);
         setError(null);
         try {
@@ -527,7 +506,7 @@ export const useGetBanner = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getBanner, banner, loading, error };
 };
@@ -536,7 +515,7 @@ export const useCreateBanner = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const createBanner = useCallback(async (bannerData) => { // Add useCallback
+    const createBanner = useCallback(async (bannerData) => {
         setLoading(true);
         setError(null);
         try {
@@ -553,7 +532,7 @@ export const useCreateBanner = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { createBanner, loading, error };
 };
@@ -562,7 +541,7 @@ export const useUpdateBanner = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const updateBanner = useCallback(async (bannerId, bannerData) => { // Add useCallback
+    const updateBanner = useCallback(async (bannerId, bannerData) => {
         setLoading(true);
         setError(null);
         try {
@@ -579,7 +558,7 @@ export const useUpdateBanner = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { updateBanner, loading, error };
 };
@@ -588,7 +567,7 @@ export const useDeleteBanner = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const deleteBanner = useCallback(async (bannerId) => { // Add useCallback
+    const deleteBanner = useCallback(async (bannerId) => {
         setLoading(true);
         setError(null);
         try {
@@ -602,21 +581,18 @@ export const useDeleteBanner = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { deleteBanner, loading, error };
 };
 
-// ============================================================================
 // CATEGORY MANAGEMENT HOOKS
-// ============================================================================
-
 export const useGetCategories = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [categories, setCategories] = useState([]);
 
-    const getCategories = useCallback(async () => { // Add useCallback
+    const getCategories = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -631,7 +607,7 @@ export const useGetCategories = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getCategories, categories, loading, error, setCategories };
 };
@@ -641,7 +617,7 @@ export const useGetCategory = () => {
     const [error, setError] = useState(null);
     const [category, setCategory] = useState(null);
 
-    const getCategory = useCallback(async (categoryId) => { // Add useCallback
+    const getCategory = useCallback(async (categoryId) => {
         setLoading(true);
         setError(null);
         try {
@@ -656,7 +632,7 @@ export const useGetCategory = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { getCategory, category, loading, error };
 };
@@ -665,7 +641,7 @@ export const useCreateCategory = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const createCategory = useCallback(async (categoryData) => { // Add useCallback
+    const createCategory = useCallback(async (categoryData) => {
         setLoading(true);
         setError(null);
         try {
@@ -682,7 +658,7 @@ export const useCreateCategory = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { createCategory, loading, error };
 };
@@ -691,7 +667,7 @@ export const useUpdateCategory = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const updateCategory = useCallback(async (categoryId, categoryData) => { // Add useCallback
+    const updateCategory = useCallback(async (categoryId, categoryData) => {
         setLoading(true);
         setError(null);
         try {
@@ -708,7 +684,7 @@ export const useUpdateCategory = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { updateCategory, loading, error };
 };
@@ -717,7 +693,7 @@ export const useDeleteCategory = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const deleteCategory = useCallback(async (categoryId) => { // Add useCallback
+    const deleteCategory = useCallback(async (categoryId) => {
         setLoading(true);
         setError(null);
         try {
@@ -731,34 +707,39 @@ export const useDeleteCategory = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { deleteCategory, loading, error };
 };
 
+// IMPORTANT: Admin SignUp - REMOVE SECRET KEY REQUIREMENT
 export const useAdminSignUp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const adminSignUp = useCallback(async (name, email, password) => { // Add useCallback
+    const adminSignUp = useCallback(async (name, email, password) => {
         setLoading(true);
         setError(null);
         try {
+            console.log('Attempting admin signup...', { name, email });
             const res = await API.post("/auth/admin-sign-up", {
                 name,
                 email,
                 password,
+                // Secret key removed - backend should handle admin creation without it
             });
+            console.log('Admin signup successful:', res.data);
             return res.data;
         } catch (err) {
+            console.error('Admin signup failed:', err.response?.data);
             const errorMessage =
-                err.response?.data?.message || "Sign-up failed";
+                err.response?.data?.message || err.response?.data?.error || "Sign-up failed";
             setError(errorMessage);
             throw new Error(errorMessage);
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { adminSignUp, loading, error };
 };
@@ -767,7 +748,7 @@ export const useAddProductReview = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const addReview = useCallback(async (productId, reviewData) => { // Add useCallback
+    const addReview = useCallback(async (productId, reviewData) => {
         setLoading(true);
         setError(null);
         try {
@@ -780,7 +761,7 @@ export const useAddProductReview = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // Empty dependency array
+    }, []);
 
     return { addReview, loading, error };
 };
